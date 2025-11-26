@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 from typing import List
 
 
@@ -28,7 +28,7 @@ class DescribeContextFilesResponseBody(DaraModel):
     def validate(self):
         if self.data:
             for v1 in self.data:
-                 if v1:
+                if v1:
                     v1.validate()
 
     def to_map(self):
@@ -88,6 +88,7 @@ class DescribeContextFilesResponseBody(DaraModel):
             self.success = m.get('Success')
 
         return self
+
 
 class DescribeContextFilesResponseBodyData(DaraModel):
     def __init__(
@@ -170,4 +171,4 @@ class DescribeContextFilesResponseBodyData(DaraModel):
         if m.get('Status') is not None:
             self.status = m.get('Status')
 
-        return self 
+        return self

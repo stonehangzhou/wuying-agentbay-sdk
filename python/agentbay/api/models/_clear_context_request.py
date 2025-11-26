@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from darabonba.model import DaraModel
 
+
 class ClearContextRequest(DaraModel):
     def __init__(
         self,
@@ -38,4 +39,3 @@ class ClearContextRequest(DaraModel):
             self.id = m.get('Id')
 
         return self
-

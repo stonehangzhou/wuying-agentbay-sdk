@@ -7,6 +7,7 @@ from typing import Dict
 from agentbay.api import models as main_models
 from darabonba.model import DaraModel
 
+
 class ClearContextResponse(DaraModel):
     def __init__(
         self,
@@ -51,4 +52,3 @@ class ClearContextResponse(DaraModel):
             self.body = temp_model.from_map(m.get('body'))
 
         return self
-

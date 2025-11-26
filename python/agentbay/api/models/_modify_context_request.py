@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
+from darabonba.model import DaraModel
 
 
 class ModifyContextRequest(DaraModel):
@@ -46,4 +46,3 @@ class ModifyContextRequest(DaraModel):
             self.name = m.get('Name')
 
         return self
-

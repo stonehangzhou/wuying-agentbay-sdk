@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
+from darabonba.model import DaraModel
 
 
 class DescribeContextFilesRequest(DaraModel):
@@ -61,4 +61,4 @@ class DescribeContextFilesRequest(DaraModel):
         if m.get('ContextId') is not None:
             self.context_id = m.get('ContextId')
 
-        return self 
+        return self

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 
 
 class GetLabelResponseBody(DaraModel):
@@ -98,6 +98,7 @@ class GetLabelResponseBody(DaraModel):
 
         return self
 
+
 class GetLabelResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -124,4 +125,3 @@ class GetLabelResponseBodyData(DaraModel):
             self.labels = m.get('Labels')
 
         return self
-

@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 from mcp_server.page_agent import PageAgent
 
+
 class Center(BaseModel):
     name: str = Field(
         ..., description="The name of the Primary Center (city/town)."
@@ -17,6 +18,7 @@ class Zone(BaseModel):
 
 class AreaCodeData(BaseModel):
     zone: List[Zone]
+
 
 EXPECTED_DATA = {
     "zone": [
@@ -109,6 +111,7 @@ EXPECTED_DATA = {
     ]
 }
 
+
 def validate_zone_centers(extracted_centers: List[Dict], expected_centers: List[Dict], zone_name: str) -> tuple[bool, str]:
     """
     Validate all the centers in a zone
@@ -128,6 +131,7 @@ def validate_zone_centers(extracted_centers: List[Dict], expected_centers: List[
         return False, f"Zone '{zone_name}' have additional zone centers: {extra_items}"
 
     return True, ""
+
 
 def validate_extracted_data(extracted_data: Dict[str, Any]) -> tuple[bool, str]:
     """

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 
-
 from ._call_mcp_tool_request import CallMcpToolRequest
 from ._call_mcp_tool_response_body import CallMcpToolResponseBody
 from ._call_mcp_tool_response import CallMcpToolResponse

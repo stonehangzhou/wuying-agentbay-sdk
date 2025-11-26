@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 
 
 class GetContextFileDownloadUrlResponseBody(DaraModel):
@@ -74,6 +74,7 @@ class GetContextFileDownloadUrlResponseBody(DaraModel):
 
         return self
 
+
 class GetContextFileDownloadUrlResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -107,4 +108,4 @@ class GetContextFileDownloadUrlResponseBodyData(DaraModel):
         if m.get('Url') is not None:
             self.url = m.get('Url')
 
-        return self 
+        return self

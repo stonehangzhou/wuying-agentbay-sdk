@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 
 
 class GetLinkResponseBody(DaraModel):
@@ -74,6 +74,7 @@ class GetLinkResponseBody(DaraModel):
 
         return self
 
+
 class GetLinkResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -100,4 +101,3 @@ class GetLinkResponseBodyData(DaraModel):
             self.url = m.get('Url')
 
         return self
-

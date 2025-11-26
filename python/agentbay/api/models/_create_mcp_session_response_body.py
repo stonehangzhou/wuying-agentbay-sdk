@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 from typing import Optional
 
 
@@ -74,6 +74,7 @@ class CreateMcpSessionResponseBody(DaraModel):
             self.success = m.get('Success')
 
         return self
+
 
 class CreateMcpSessionResponseBodyData(DaraModel):
     def __init__(
@@ -173,4 +174,3 @@ class CreateMcpSessionResponseBodyData(DaraModel):
             self.vpc_resource = m.get('VpcResource')
 
         return self
-

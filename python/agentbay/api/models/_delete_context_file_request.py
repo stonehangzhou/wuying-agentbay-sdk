@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
+from darabonba.model import DaraModel
 
 
 class DeleteContextFileRequest(DaraModel):
@@ -45,4 +45,4 @@ class DeleteContextFileRequest(DaraModel):
         if m.get('FilePath') is not None:
             self.file_path = m.get('FilePath')
 
-        return self 
+        return self

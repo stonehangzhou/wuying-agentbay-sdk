@@ -23,13 +23,14 @@ class BrowserFingerprintContext:
     """
     Browser fingerprint context configuration.
     """
+
     def __init__(self, fingerprint_context_id: str):
         """
         Initialize FingerprintContext with context id.
-        
+
         Args:
             fingerprint_context_id (str): ID of the fingerprint context for browser fingerprint.
-        
+
         Raises:
             ValueError: If fingerprint_context_id is empty.
         """
@@ -45,6 +46,7 @@ class BrowserProxy:
     Supports two types of proxy: custom proxy, wuying proxy.
     wuying proxy support two strategies: restricted and polling.
     """
+
     def __init__(
         self,
         proxy_type: Literal["custom", "wuying"],
@@ -103,6 +105,7 @@ class BrowserProxy:
 
         if proxy_type == "wuying" and strategy == "polling" and pollsize <= 0:
             raise ValueError("pollsize must be greater than 0 for polling strategy")
+
     def _to_map(self):
         """
         Convert BrowserProxy to dictionary format.
@@ -131,7 +134,6 @@ class BrowserProxy:
             proxy_map["strategy"] = self.strategy
             if self.strategy == "polling":
                 proxy_map["pollsize"] = self.pollsize
-
 
         return proxy_map
 
@@ -179,10 +181,12 @@ class BrowserProxy:
         else:
             raise ValueError(f"Unsupported proxy type: {proxy_type}")
 
+
 class BrowserViewport:
     """
     Browser viewport options.
     """
+
     def __init__(self, width: int = 1920, height: int = 1080):
         self.width = width
         self.height = height
@@ -232,10 +236,12 @@ class BrowserViewport:
             self.height = m.get('height')
         return self
 
+
 class BrowserScreen:
     """
     Browser screen options.
     """
+
     def __init__(self, width: int = 1920, height: int = 1080):
         self.width = width
         self.height = height
@@ -285,10 +291,12 @@ class BrowserScreen:
             self.height = m.get('height')
         return self
 
+
 class BrowserFingerprint:
     """
     Browser fingerprint options.
     """
+
     def __init__(
         self,
         devices: list[Literal["desktop", "mobile"]] = None,
@@ -299,9 +307,7 @@ class BrowserFingerprint:
         self.operating_systems = operating_systems
         self.locales = locales
 
-
         # Validation
-
 
         if devices is not None:
             if not isinstance(devices, list):
@@ -337,10 +343,12 @@ class BrowserFingerprint:
             self.locales = m.get('locales')
         return self
 
+
 class BrowserOption:
     """
     browser initialization options.
     """
+
     def __init__(
         self,
         use_stealth: bool = False,
@@ -476,10 +484,12 @@ class BrowserOption:
             self.browser_type = m.get('browserType')
         return self
 
+
 class Browser(BaseService):
     """
     Browser provides browser-related operations for the session.
     """
+
     def __init__(self, session: "Session"):
         self.session = session
         self._endpoint_url = None
@@ -632,7 +642,7 @@ class Browser(BaseService):
         """
         Takes a screenshot of the specified page with enhanced options and error handling.
         This is the async version of the screenshot method.
-        
+
         Args:
             page (Page): The Playwright Page object to take a screenshot of. This is a required parameter.
             full_page (bool): Whether to capture the full scrollable page. Defaults to False.
@@ -644,10 +654,10 @@ class Browser(BaseService):
                       - animations (str): How to handle animations (default: 'disabled')
                       - caret (str): How to handle the caret (default: 'hide')
                       - scale (str): Scale setting (default: 'css')
-            
+
         Returns:
             bytes: Screenshot data as bytes.
-            
+
         Raises:
             BrowserError: If browser is not initialized.
             RuntimeError: If screenshot capture fails.
@@ -656,7 +666,7 @@ class Browser(BaseService):
         if not self.is_initialized():
             raise BrowserError("Browser must be initialized before calling screenshot.")
         if page is None:
-            raise ValueError("Page cannot be None")  
+            raise ValueError("Page cannot be None")
         # Set default enhanced options
         enhanced_options = {
             "animations": "disabled",
@@ -669,15 +679,15 @@ class Browser(BaseService):
 
         # Update with user-provided options (but full_page is already set from function parameter)
         enhanced_options.update(options)
-        
-        try:          
+
+        try:
             # Wait for page to load
             # await page.wait_for_load_state("networkidle")
             await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             await page.wait_for_load_state("domcontentloaded", timeout=30000)
             # Scroll to load all content (especially for lazy-loaded elements)
             await self._scroll_to_load_all_content_async(page)
-            
+
             # Ensure images with data-src attributes are loaded
             await page.evaluate("""
                 () => {
@@ -694,22 +704,22 @@ class Browser(BaseService):
                     });
                 }
             """)
-            
+
             # Wait a bit for images to load
             await page.wait_for_timeout(1500)
             final_height = await page.evaluate("document.body.scrollHeight")
             await page.set_viewport_size({"width": 1920, "height": min(final_height, 10000)})
-            
+
             # Take the screenshot
             screenshot_bytes = await page.screenshot(**enhanced_options)
             _logger.info("Screenshot captured successfully.")
             return screenshot_bytes
-            
+
         except Exception as e:
             # Convert exception to string safely to avoid comparison issues
             try:
                 error_str = str(e)
-            except:
+            except Exception:
                 error_str = "Unknown error occurred"
             error_msg = f"Failed to capture screenshot: {error_str}"
             _logger.error(error_msg)
@@ -721,7 +731,9 @@ class Browser(BaseService):
         for _ in range(max_scrolls):
             await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             await page.wait_for_timeout(delay_ms)
-            new_height = await page.evaluate("Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)")
+            new_height = await page.evaluate(
+                "Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)"
+            )
             if new_height == last_height:
                 break
             last_height = new_height

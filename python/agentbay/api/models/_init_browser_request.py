@@ -3,6 +3,7 @@
 from __future__ import annotations
 from darabonba.model import DaraModel
 
+
 class InitBrowserRequest(DaraModel):
     def __init__(
         self,
@@ -50,4 +51,3 @@ class InitBrowserRequest(DaraModel):
             self.session_id = m.get('SessionId')
 
         return self
-

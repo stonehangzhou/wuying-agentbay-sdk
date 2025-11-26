@@ -28,9 +28,6 @@ class CommandResult(ApiResponse):
         self.error_message = error_message
 
 
-
-
-
 class Command(BaseService):
     """
     Handles command execution operations in the AgentBay cloud environment.
@@ -114,5 +111,3 @@ class Command(BaseService):
                 success=False,
                 error_message=f"Failed to execute command: {e}",
             )
-
-

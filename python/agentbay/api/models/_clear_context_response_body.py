@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from darabonba.model import DaraModel
 
+
 class ClearContextResponseBody(DaraModel):
     def __init__(
         self,
@@ -62,4 +63,3 @@ class ClearContextResponseBody(DaraModel):
             self.success = m.get('Success')
 
         return self
-

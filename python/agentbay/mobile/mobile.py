@@ -26,6 +26,7 @@ _logger = get_logger("mobile")
 
 class UIElementListResult(ApiResponse):
     """Result of UI element listing operations."""
+
     def __init__(
         self,
         request_id: str = "",
@@ -649,16 +650,16 @@ class Mobile(BaseService):
         if not mobile_config:
             _logger.warning("No mobile configuration provided")
             return
-        
+
         # Configure resolution lock
         if mobile_config.lock_resolution is not None:
             self._set_resolution_lock(mobile_config.lock_resolution)
-        
+
         # Configure app management rules
         if mobile_config.app_manager_rule and mobile_config.app_manager_rule.rule_type:
             app_rule = mobile_config.app_manager_rule
             package_names = app_rule.app_package_name_list or []
-            
+
             if package_names and app_rule.rule_type in ["White", "Black"]:
                 if app_rule.rule_type == "White":
                     self._set_app_whitelist(package_names)
@@ -666,11 +667,11 @@ class Mobile(BaseService):
                     self._set_app_blacklist(package_names)
             elif not package_names:
                 _logger.warning(f"No package names provided for {app_rule.rule_type} list")
-        
+
         # Configure navigation bar visibility
         if mobile_config.hide_navigation_bar is not None:
             self._set_navigation_bar_visibility(mobile_config.hide_navigation_bar)
-        
+
         # Configure uninstall blacklist
         if mobile_config.uninstall_blacklist and len(mobile_config.uninstall_blacklist) > 0:
             self._set_uninstall_blacklist(mobile_config.uninstall_blacklist)
@@ -867,12 +868,12 @@ class Mobile(BaseService):
         if not template:
             _logger.error(f"Template '{template_name}' not found")
             return
-            
+
         command = template.format(**params)
 
         _logger.info(f"Executing {operation_name}")
         result = self.session.command.execute_command(command)
-        
+
         if result.success:
             _logger.info(f"✅ {operation_name} completed successfully")
         else:

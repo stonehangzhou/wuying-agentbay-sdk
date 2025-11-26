@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 from typing import Dict
 
 
@@ -50,4 +50,3 @@ class SyncContextResponse(DaraModel):
             self.body = temp_model.from_map(m.get('body'))
 
         return self
-
