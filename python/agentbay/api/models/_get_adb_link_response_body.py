@@ -5,6 +5,7 @@ from __future__ import annotations
 from agentbay.api import models as main_models
 from darabonba.model import DaraModel
 
+
 class GetAdbLinkResponseBody(DaraModel):
     def __init__(
         self,
@@ -74,6 +75,7 @@ class GetAdbLinkResponseBody(DaraModel):
 
         return self
 
+
 class GetAdbLinkResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -100,5 +102,3 @@ class GetAdbLinkResponseBodyData(DaraModel):
             self.url = m.get('Url')
 
         return self
-
-

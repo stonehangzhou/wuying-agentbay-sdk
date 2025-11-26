@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 from typing import List, Optional
 
 
@@ -36,7 +36,7 @@ class CreateMcpSessionRequest(DaraModel):
     def validate(self):
         if self.persistence_data_list:
             for v1 in self.persistence_data_list:
-                 if v1:
+                if v1:
                     v1.validate()
         if self.extra_configs:
             self.extra_configs.validate()
@@ -124,6 +124,7 @@ class CreateMcpSessionRequest(DaraModel):
 
         return self
 
+
 class CreateMcpSessionRequestPersistenceDataList(DaraModel):
     def __init__(
         self,
@@ -167,7 +168,8 @@ class CreateMcpSessionRequestPersistenceDataList(DaraModel):
 
         return self
 
-class AppManagerRule(DaraModel):    
+
+class AppManagerRule(DaraModel):
     def __init__(
         self,
         rule_type: Optional[str] = None,
@@ -187,24 +189,24 @@ class AppManagerRule(DaraModel):
         _map = super().to_map()
         if _map is not None:
             result = _map
-        
+
         if self.rule_type is not None:
             result['RuleType'] = self.rule_type
-        
+
         result['AppPackageNameList'] = []
         if self.app_package_name_list is not None:
             result['AppPackageNameList'] = self.app_package_name_list
-        
+
         return result
 
     def from_map(self, m: Optional[dict] = None):
         m = m or dict()
         if m.get('RuleType') is not None:
             self.rule_type = m.get('RuleType')
-        
+
         if m.get('AppPackageNameList') is not None:
             self.app_package_name_list = m.get('AppPackageNameList', [])
-        
+
         return self
 
 
@@ -234,36 +236,36 @@ class MobileExtraConfig(DaraModel):
         _map = super().to_map()
         if _map is not None:
             result = _map
-        
+
         if self.lock_resolution is not None:
             result['LockResolution'] = self.lock_resolution
-        
+
         if self.app_manager_rule is not None:
             result['AppManagerRule'] = self.app_manager_rule.to_map()
-        
+
         if self.hide_navigation_bar is not None:
             result['HideNavigationBar'] = self.hide_navigation_bar
-        
+
         if self.uninstall_blacklist is not None:
             result['UninstallBlacklist'] = self.uninstall_blacklist
-        
+
         return result
 
     def from_map(self, m: Optional[dict] = None):
         m = m or dict()
         if m.get('LockResolution') is not None:
             self.lock_resolution = m.get('LockResolution')
-        
+
         if m.get('AppManagerRule') is not None:
             temp_model = AppManagerRule()
             self.app_manager_rule = temp_model.from_map(m.get('AppManagerRule'))
-        
+
         if m.get('HideNavigationBar') is not None:
             self.hide_navigation_bar = m.get('HideNavigationBar')
-        
+
         if m.get('UninstallBlacklist') is not None:
             self.uninstall_blacklist = m.get('UninstallBlacklist', [])
-        
+
         return self
 
 
@@ -283,10 +285,10 @@ class ExtraConfigs(DaraModel):
         _map = super().to_map()
         if _map is not None:
             result = _map
-        
+
         if self.mobile is not None:
             result['Mobile'] = self.mobile.to_map()
-        
+
         return result
 
     def from_map(self, m: Optional[dict] = None):
@@ -294,6 +296,5 @@ class ExtraConfigs(DaraModel):
         if m.get('Mobile') is not None:
             temp_model = MobileExtraConfig()
             self.mobile = temp_model.from_map(m.get('Mobile'))
-        
-        return self
 
+        return self

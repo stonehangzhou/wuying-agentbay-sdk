@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
+from darabonba.model import DaraModel
 
 
 class CallMcpToolRequest(DaraModel):
@@ -94,4 +94,3 @@ class CallMcpToolRequest(DaraModel):
             self.tool = m.get('Tool')
 
         return self
-

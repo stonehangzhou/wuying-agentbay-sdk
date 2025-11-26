@@ -74,6 +74,7 @@ class GetSessionResponseBody(DaraModel):
 
         return self
 
+
 class GetSessionResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -164,4 +165,3 @@ class GetSessionResponseBodyData(DaraModel):
             self.resource_url = m.get('ResourceUrl')
 
         return self
-

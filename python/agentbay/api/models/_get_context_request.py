@@ -54,4 +54,3 @@ class GetContextRequest(DaraModel):
             self.name = m.get('Name')
 
         return self
-

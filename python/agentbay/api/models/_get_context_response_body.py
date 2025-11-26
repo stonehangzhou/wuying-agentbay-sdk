@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 
 
 class GetContextResponseBody(DaraModel):
@@ -74,6 +74,7 @@ class GetContextResponseBody(DaraModel):
 
         return self
 
+
 class GetContextResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -140,4 +141,3 @@ class GetContextResponseBodyData(DaraModel):
             self.state = m.get('State')
 
         return self
-

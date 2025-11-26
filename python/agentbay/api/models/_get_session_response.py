@@ -50,4 +50,3 @@ class GetSessionResponse(DaraModel):
             self.body = temp_model.from_map(m.get('body'))
 
         return self
-

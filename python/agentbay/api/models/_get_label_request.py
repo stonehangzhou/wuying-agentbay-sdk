@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
+from darabonba.model import DaraModel
 
 
 class GetLabelRequest(DaraModel):
@@ -54,4 +54,3 @@ class GetLabelRequest(DaraModel):
             self.session_id = m.get('SessionId')
 
         return self
-

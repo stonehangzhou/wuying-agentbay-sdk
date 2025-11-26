@@ -115,28 +115,28 @@ class FingerprintFormat:
     """Complete fingerprint format including fingerprint data and headers."""
     fingerprint: Fingerprint
     headers: Dict[str, str]
-    
+
     @classmethod
     def load(cls, data: Union[dict, str]) -> 'FingerprintFormat':
         """
         Load fingerprint from dictionary or JSON string.
-        
+
         This is the recommended public API for loading fingerprint data.
-        
+
         Args:
             data: Either a dictionary or JSON string containing fingerprint data
-            
+
         Returns:
             FingerprintFormat: Loaded fingerprint format object
-            
+
         Raises:
             ValueError: If data is invalid or cannot be parsed
-            
+
         Example:
             ```python
             # From dictionary
             fingerprint = FingerprintFormat.load({"fingerprint": {...}, "headers": {...}})
-            
+
             # From JSON string
             fingerprint = FingerprintFormat.load('{"fingerprint": {...}, "headers": {...}}')
             ```
@@ -147,35 +147,35 @@ class FingerprintFormat:
             return cls._from_dict(data)
         else:
             raise ValueError(f"Invalid data type: expected dict or str, got {type(data)}")
-    
+
     def _to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary format."""
         return asdict(self)
-    
+
     def _to_json(self, indent: int = 2, ensure_ascii: bool = False) -> str:
         """Convert to JSON string format."""
         return json.dumps(self._to_dict(), indent=indent, ensure_ascii=ensure_ascii)
-    
+
     @classmethod
     def _from_dict(cls, data: Dict[str, Any]) -> 'FingerprintFormat':
         """Create FingerprintFormat from dictionary data."""
         if not data or not isinstance(data, dict):
             raise ValueError("Invalid data: expected a dictionary")
-            
+
         fingerprint_dict = data.get('fingerprint') or {}
         headers_dict = data.get('headers') or {}
-        
+
         # Convert nested dictionaries to dataclass instances
         screen_dict = fingerprint_dict.get('screen') or {}
         try:
             screen = ScreenFingerprint(**screen_dict)
         except (TypeError, ValueError) as e:
             raise ValueError(f"Failed to create ScreenFingerprint: {e}")
-        
+
         # Handle UserAgentData - safely get navigator data
         nav_dict = fingerprint_dict.get('navigator') or {}
         user_agent_data_dict = nav_dict.get('userAgentData') or {}
-        
+
         # Handle brands and fullVersionList safely
         brands_data = user_agent_data_dict.get('brands', [])
         brands = []
@@ -186,7 +186,7 @@ class FingerprintFormat:
                         brand=brand_data.get('brand', ''),
                         version=brand_data.get('version', '')
                     ))
-        
+
         full_version_list_data = user_agent_data_dict.get('fullVersionList', [])
         full_version_list = []
         if isinstance(full_version_list_data, list):
@@ -196,7 +196,7 @@ class FingerprintFormat:
                         brand=brand_data.get('brand', ''),
                         version=brand_data.get('version', '')
                     ))
-        
+
         user_agent_data = UserAgentData(
             brands=brands,
             mobile=user_agent_data_dict.get('mobile', False),
@@ -208,7 +208,7 @@ class FingerprintFormat:
             platformVersion=user_agent_data_dict.get('platformVersion', ''),
             uaFullVersion=user_agent_data_dict.get('uaFullVersion', '')
         )
-        
+
         # Handle ExtraProperties
         extra_props_dict = nav_dict.get('extraProperties') or {}
         extra_props = ExtraProperties(
@@ -218,7 +218,7 @@ class FingerprintFormat:
             pdfViewerEnabled=extra_props_dict.get('pdfViewerEnabled', True),
             installedApps=extra_props_dict.get('installedApps', [])
         )
-        
+
         # Create NavigatorFingerprint
         navigator = NavigatorFingerprint(
             userAgent=nav_dict.get('userAgent', ''),
@@ -241,7 +241,7 @@ class FingerprintFormat:
             maxTouchPoints=nav_dict.get('maxTouchPoints'),
             extraProperties=extra_props
         )
-        
+
         # Create VideoCard
         video_card_dict = fingerprint_dict.get('videoCard') or {}
         try:
@@ -249,7 +249,7 @@ class FingerprintFormat:
         except (TypeError, ValueError) as e:
             _logger.warning(f"Failed to create VideoCard: {e}, using defaults")
             video_card = VideoCard(renderer="Unknown", vendor="Unknown")
-        
+
         # Create main Fingerprint
         fingerprint = Fingerprint(
             screen=screen,
@@ -264,15 +264,15 @@ class FingerprintFormat:
             mockWebRTC=fingerprint_dict.get('mockWebRTC', False),
             slim=fingerprint_dict.get('slim')
         )
-        
+
         return cls(fingerprint=fingerprint, headers=headers_dict)
-    
+
     @classmethod
     def _from_json(cls, json_str: str) -> 'FingerprintFormat':
         """Create FingerprintFormat from JSON string."""
         data = json.loads(json_str)
         return cls._from_dict(data)
-    
+
     @classmethod
     def create(
         cls,
@@ -291,7 +291,7 @@ class FingerprintFormat:
     ) -> 'FingerprintFormat':
         """
         Create FingerprintFormat directly using component classes.
-        
+
         Args:
             screen: ScreenFingerprint object
             navigator: NavigatorFingerprint object
@@ -305,7 +305,7 @@ class FingerprintFormat:
             fonts: List of available fonts (optional)
             mock_webrtc: Whether WebRTC is mocked (default: False)
             slim: Slim mode flag (optional)
-            
+
         Returns:
             FingerprintFormat: Complete fingerprint format object
         """
@@ -322,110 +322,109 @@ class FingerprintFormat:
             mockWebRTC=mock_webrtc,
             slim=slim
         )
-        
-        return cls(fingerprint=fingerprint, headers=headers)
 
+        return cls(fingerprint=fingerprint, headers=headers)
 
 
 class BrowserFingerprintGenerator:
     """Browser fingerprint generator class."""
-    
+
     def __init__(self, headless: bool = False, use_chrome_channel: bool = True):
         """
         Initialize the fingerprint generator.
-        
+
         Args:
             headless: Whether to run browser in headless mode
             use_chrome_channel: Whether to use Chrome channel
         """
         self.headless = headless
         self.use_chrome_channel = use_chrome_channel
-    
+
     async def generate_fingerprint(self) -> Optional[FingerprintFormat]:
         """
         Extract comprehensive browser fingerprint using Playwright.
-            
+
         Returns:
             Optional[FingerprintFormat]: FingerprintFormat object containing fingerprint and headers, or None if generation failed
         """
         try:
             _logger.info("Starting fingerprint generation")
-            
+
             async with async_playwright() as p:
                 # Launch Chrome browser with specific options
                 launch_options = {
                     'headless': self.headless,
                     'args': ['--start-maximized']
                 }
-                
+
                 if self.use_chrome_channel:
                     launch_options['channel'] = 'chrome'
-                
+
                 browser = await p.chromium.launch(**launch_options)
                 context = await browser.new_context(no_viewport=True)
                 page = await context.new_page()
-                
+
                 # Navigate to a test page to ensure proper loading
                 await page.goto('about:blank')
-                
+
                 _logger.info("Extracting comprehensive browser fingerprint...")
-                
+
                 # Extract comprehensive fingerprint data
                 fingerprint_data = await self._extract_fingerprint_data(page)
-                
+
                 # Get request headers
                 headers_data = await self._extract_headers_data(page)
-                
+
                 await browser.close()
-                
+
                 # Combine fingerprint and headers using FingerprintFormat
                 fingerprint_format = FingerprintFormat._from_dict({
                     "fingerprint": fingerprint_data,
                     "headers": headers_data
                 })
-                
+
                 _logger.info("Fingerprint generation completed successfully!")
                 return fingerprint_format
-                    
+
         except Exception as e:
             _logger.error(f"Error generating fingerprint: {e}")
             return None
-    
+
     async def generate_fingerprint_to_file(self, output_filename: str = "fingerprint_output.json") -> bool:
         """
         Extract comprehensive browser fingerprint and save to file.
-        
+
         Args:
             output_filename: Name of the file to save fingerprint data
-            
+
         Returns:
             bool: True if fingerprint generation and saving succeeded, False otherwise
         """
         try:
             _logger.info(f"Starting fingerprint generation, output file: {output_filename}")
-            
+
             # Generate fingerprint data (FingerprintFormat object)
             fingerprint_format = await self.generate_fingerprint()
-            
+
             if fingerprint_format is None:
                 _logger.error("Failed to generate fingerprint data")
                 return False
-            
+
             # Convert to JSON string and save to file
             fingerprint_json = fingerprint_format._to_json(indent=2, ensure_ascii=False)
             success = await self._save_to_file(fingerprint_json, output_filename)
-            
+
             if success:
                 _logger.info(f"Fingerprint generation completed successfully! Saved to {output_filename}")
                 return True
             else:
                 _logger.error("Failed to save fingerprint data")
                 return False
-                
+
         except Exception as e:
             _logger.error(f"Error generating fingerprint to file: {e}")
             return False
-    
+
     async def _extract_fingerprint_data(self, page):
         """Extract fingerprint data from the page."""
         return await page.evaluate("""
@@ -693,13 +692,13 @@ class BrowserFingerprintGenerator:
             return fingerprint;
         }
         """)
-    
+
     async def _extract_headers_data(self, page):
         """Extract headers data from httpbin."""
         try:
             _logger.info("Getting request headers...")
             await page.goto('https://httpbin.org/headers', wait_until='networkidle')
-            
+
             # Extract headers from the response
             all_headers = await page.evaluate("""
             () => {
@@ -715,11 +714,11 @@ class BrowserFingerprintGenerator:
                 return {};
             }
             """)
-            
+
             # Filter only the key headers from the example
             key_headers = [
                 'sec-ch-ua',
-                'sec-ch-ua-mobile', 
+                'sec-ch-ua-mobile',
                 'sec-ch-ua-platform',
                 'upgrade-insecure-requests',
                 'user-agent',
@@ -731,18 +730,18 @@ class BrowserFingerprintGenerator:
                 'accept-encoding',
                 'accept-language'
             ]
-            
+
             headers_data = {}
             # Convert all_headers keys to lowercase for case-insensitive matching
             all_headers_lower = {k.lower(): v for k, v in all_headers.items()}
-            
+
             for header in key_headers:
                 header_lower = header.lower()
                 if header_lower in all_headers_lower:
                     headers_data[header] = all_headers_lower[header_lower]
-            
+
             return headers_data
-            
+
         except Exception as e:
             _logger.warning(f"Failed to extract headers: {e}")
             return {}

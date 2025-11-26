@@ -14,8 +14,9 @@ from agentbay.logger import get_logger
 # Use the AgentBay _logger instead of the standard _logger
 _logger = get_logger("local_page_agent")
 
+
 class LocalMCPClient:
-    def __init__(self, server: str, command: str, args: list[str])-> None:
+    def __init__(self, server: str, command: str, args: list[str]) -> None:
         self.server = server
         self.command = command
         self.args = args
@@ -27,6 +28,7 @@ class LocalMCPClient:
     def connect(self) -> None:
         if (self.worker_thread is None):
             promise: concurrent.futures.Future[bool] = concurrent.futures.Future()
+
             def thread_target() -> None:
                 async def _connect_and_list_tools() -> None:
                     success = False
@@ -59,7 +61,8 @@ class LocalMCPClient:
 
     async def call_tool(self, tool_name: str, arguments: Dict[str, Any]):
         if not self.session or not self._tool_call_queue or not self._loop:
-            raise RuntimeError("MCP client is not connected. Call connect() and ensure it returns True before calling callTool.")
+            raise RuntimeError(
+                "MCP client is not connected. Call connect() and ensure it returns True before calling callTool.")
         caller_loop = asyncio.get_running_loop()
         fut = caller_loop.create_future()
         await self._tool_call_queue.put((tool_name, arguments, fut))
@@ -112,6 +115,7 @@ class LocalMCPClient:
             else:
                 await asyncio.sleep(1)
 
+
 class LocalPageAgent(BrowserAgent):
     def __init__(self, session, browser):
         super().__init__(session, browser)
@@ -143,7 +147,7 @@ class LocalPageAgent(BrowserAgent):
         coro = self._call_mcp_tool_async(name, args)
         fut = asyncio.run_coroutine_threadsafe(coro, target_loop)
         return fut.result()
-    
+
     async def _call_mcp_tool_async(self, name: str, args: dict) -> OperationResult:
         if not self.mcp_client:
             raise RuntimeError("mcp_client is not set on LocalBrowserAgent.")
@@ -161,6 +165,7 @@ class LocalBrowser(Browser):
     async def initialize_async(self, options: BrowserOption) -> bool:
         if (self._worker_thread is None):
             promise: concurrent.futures.Future[bool] = concurrent.futures.Future()
+
             def thread_target() -> None:
                 async def _launch_local_browser() -> None:
                     success = False
@@ -172,7 +177,7 @@ class LocalBrowser(Browser):
                             chrome_cdp_ports_path = "/tmp/chrome_cdp_ports.json"
                             with open(chrome_cdp_ports_path, "w") as f:
                                 json.dump({
-                                    "chrome": str(self._cdp_port), 
+                                    "chrome": str(self._cdp_port),
                                     "router": str(self._cdp_port),
                                     "local": str(self._cdp_port)
                                 }, f)
@@ -211,6 +216,7 @@ class LocalBrowser(Browser):
         """Run interactive loop."""
         while True:
             await asyncio.sleep(3)
+
 
 class LocalSession(Session):
     def __init__(self):

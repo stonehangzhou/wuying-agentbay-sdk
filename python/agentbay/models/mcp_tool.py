@@ -19,4 +19,4 @@ class McpTool:
 
     def get_server(self) -> str:
         """Return the server name that provides this tool."""
-        return self.server 
+        return self.server

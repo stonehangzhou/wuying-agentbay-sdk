@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from darabonba.model import DaraModel
 
+
 class GetCdpLinkRequest(DaraModel):
     def __init__(
         self,
@@ -38,5 +39,3 @@ class GetCdpLinkRequest(DaraModel):
             self.session_id = m.get('SessionId')
 
         return self
-
-

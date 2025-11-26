@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
+from darabonba.model import DaraModel
 
 
 class GetContextInfoRequest(DaraModel):
@@ -62,4 +62,3 @@ class GetContextInfoRequest(DaraModel):
             self.task_type = m.get('TaskType')
 
         return self
-

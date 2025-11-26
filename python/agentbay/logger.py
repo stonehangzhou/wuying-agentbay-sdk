@@ -47,11 +47,11 @@ def _colorize_log_message(record):
 
 class AgentBayLogger:
     """AgentBay SDK Logger with beautiful formatting."""
-    
+
     _initialized = False
     _log_level = "INFO"
     _log_file: Optional[Path] = None
-    
+
     @classmethod
     def _should_use_colors(cls) -> bool:
         """
@@ -90,7 +90,7 @@ class AgentBayLogger:
 
         # Default: no colors
         return False
-    
+
     @classmethod
     def setup(
         cls,
@@ -182,12 +182,12 @@ class AgentBayLogger:
             # If removal fails, continue with setup
             # This can happen in test environments
             pass
-        
+
         cls._log_level = level.upper()
-        
+
         # Determine if colors should be used
         should_colorize = colorize if colorize is not None else cls._should_use_colors()
-        
+
         # Console handler with beautiful formatting
         if enable_console:
             console_format = (
@@ -208,7 +208,7 @@ class AgentBayLogger:
                 backtrace=True,
                 diagnose=True
             )
-        
+
         # File handler with structured formatting (no colors)
         if enable_file:
             if log_file:
@@ -221,7 +221,8 @@ class AgentBayLogger:
             cls._log_file.parent.mkdir(parents=True, exist_ok=True)
 
             # Priority: max_file_size > rotation > default
-            file_rotation = max_file_size if max_file_size is not None else (rotation if rotation is not None else "10 MB")
+            file_rotation = max_file_size if max_file_size is not None else (
+                rotation if rotation is not None else "10 MB")
 
             file_format = (
                 "{time:YYYY-MM-DD HH:mm:ss.SSS} | "
@@ -242,9 +243,9 @@ class AgentBayLogger:
                 backtrace=True,
                 diagnose=True
             )
-        
+
         cls._initialized = True
-    
+
     @classmethod
     def get_logger(cls, name: Optional[str] = None):
         """
@@ -259,7 +260,7 @@ class AgentBayLogger:
         if name:
             return logger.bind(name=name)
         return logger
-    
+
     @classmethod
     def set_level(cls, level: str) -> None:
         """
@@ -479,29 +480,29 @@ def _log_api_response_with_details(
 def _log_code_execution_output(request_id: str, raw_output: str) -> None:
     """
     Extract and log the actual code execution output from run_code response.
-    
+
     Args:
         request_id: Request ID from the API response
         raw_output: Raw JSON output from the MCP tool
     """
     import json
-    
+
     try:
         # Parse the JSON response to extract the actual code output
         response = json.loads(raw_output)
-        
+
         # Extract text from all content items
         texts = []
         if isinstance(response, dict) and 'content' in response:
             for item in response.get('content', []):
                 if isinstance(item, dict) and item.get('type') == 'text':
                     texts.append(item.get('text', ''))
-        
+
         if not texts:
             return
-        
+
         actual_output = ''.join(texts)
-        
+
         # Format the output with a clear separator
         header = f"📋 Code Execution Output (RequestID: {request_id}):"
         colored_header = f"{_COLOR_GREEN}{header}{_COLOR_RESET}"
@@ -513,7 +514,7 @@ def _log_code_execution_output(request_id: str, raw_output: str) -> None:
         for line in lines:
             colored_line = f"{_COLOR_GREEN}   {line}{_COLOR_RESET}"
             log.opt(depth=1).info(colored_line)
-            
+
     except (json.JSONDecodeError, KeyError, TypeError):
         # If parsing fails, just return without logging
         pass

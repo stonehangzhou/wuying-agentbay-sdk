@@ -15,8 +15,9 @@ from agentbay.api.models import (
     GetSessionRequest,
     ListSessionRequest,
 )
-from agentbay.config import _load_config
+from agentbay.config import _load_config, _BROWSER_DATA_PATH
 from agentbay.context import ContextService
+from agentbay.context_sync import ContextSync
 from agentbay.model import (
     DeleteResult,
     GetSessionData,
@@ -43,9 +44,6 @@ from .logger import (
 
 # Initialize logger for this module
 _logger = get_logger("agentbay")
-from typing import Optional
-from agentbay.context_sync import ContextSync
-from agentbay.config import _BROWSER_DATA_PATH
 
 
 def _generate_random_context_name(
@@ -160,7 +158,7 @@ class AgentBay:
                 return obj.to_dict()
             else:
                 return str(obj)
-        except:
+        except Exception:
             return str(obj)
 
     def _build_session_from_response(
@@ -295,7 +293,7 @@ class AgentBay:
                 break
 
             _logger.debug(
-                f"⏳ Waiting for context synchronization, attempt {retry+1}/{max_retries}"
+                f"⏳ Waiting for context synchronization, attempt {retry + 1}/{max_retries}"
             )
             time.sleep(retry_interval)
 
@@ -434,11 +432,14 @@ class AgentBay:
                 )
                 params.context_syncs.append(file_transfer_context_sync)
 
-            request = CreateMcpSessionRequest(authorization=f"Bearer {self.api_key}")#, session_id="session-04bdwfj84pts8knif")
+            request = CreateMcpSessionRequest(authorization=f"Bearer {self.api_key}")
 
             # Add SDK stats for tracking
             framework = params.framework if params and hasattr(params, 'framework') else ""
-            sdk_stats_json = f'{{"source":"sdk","sdk_language":"python","sdk_version":"{__version__}","is_release":{str(__is_release__).lower()},"framework":"{framework}"}}'
+            sdk_stats_json = (
+                f'{{"source":"sdk","sdk_language":"python","sdk_version":"{__version__}",'
+                f'"is_release":{str(__is_release__).lower()},"framework":"{framework}"}}'
+            )
             request.sdk_stats = sdk_stats_json
 
             # Add PolicyId if specified
@@ -532,11 +533,13 @@ class AgentBay:
                     request.persistence_data_list = []
                 request.persistence_data_list.append(browser_context_sync)
                 _logger.info(
-                    f"📋 Added browser context to persistence_data_list. Total items: {len(request.persistence_data_list)}"
+                    f"📋 Added browser context to persistence_data_list. "
+                    f"Total items: {len(request.persistence_data_list)}"
                 )
                 for i, item in enumerate(request.persistence_data_list):
                     _logger.info(
-                        f"📋 persistence_data_list[{i}]: context_id={item.context_id}, path={item.path}, policy_length={len(item.policy) if item.policy else 0}"
+                        f"📋 persistence_data_list[{i}]: context_id={item.context_id}, "
+                        f"path={item.path}, policy_length={len(item.policy) if item.policy else 0}"
                     )
                     _logger.info(
                         f"📋 persistence_data_list[{i}] policy content: {item.policy}"
@@ -697,8 +700,8 @@ class AgentBay:
             return SessionResult(
                 request_id="",
                 success=False,
-            error_message=f"Unexpected error creating session: {e}",
-        )
+                error_message=f"Unexpected error creating session: {e}",
+            )
 
     def list(
         self,
@@ -1195,7 +1198,8 @@ class AgentBay:
             )
         else:
             _logger.warning(
-                f"⚠️  Failed to create file transfer context for recovered session: {context_result.error_message if hasattr(context_result, 'error_message') else 'Unknown error'}"
+                f"⚠️  Failed to create file transfer context for recovered session: "
+                f"{context_result.error_message if hasattr(context_result, 'error_message') else 'Unknown error'}"
             )
 
         return SessionResult(

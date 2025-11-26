@@ -31,6 +31,7 @@ class ScrollDirection(str, Enum):
 
 class InstalledApp:
     """Represents an installed application."""
+
     def __init__(self, name: str, start_cmd: str, stop_cmd: Optional[str] = None, work_directory: Optional[str] = None):
         self.name = name
         self.start_cmd = start_cmd
@@ -49,6 +50,7 @@ class InstalledApp:
 
 class Process:
     """Represents a running process."""
+
     def __init__(self, pname: str, pid: int, cmdline: Optional[str] = None):
         self.pname = pname
         self.pid = pid
@@ -65,6 +67,7 @@ class Process:
 
 class Window:
     """Represents a window in the system."""
+
     def __init__(
         self,
         window_id: int,
@@ -107,6 +110,7 @@ class Window:
 
 class InstalledAppListResult(ApiResponse):
     """Result of operations returning a list of InstalledApps."""
+
     def __init__(
         self,
         request_id: str = "",
@@ -122,6 +126,7 @@ class InstalledAppListResult(ApiResponse):
 
 class ProcessListResult(ApiResponse):
     """Result of operations returning a list of Processes."""
+
     def __init__(
         self,
         request_id: str = "",
@@ -137,6 +142,7 @@ class ProcessListResult(ApiResponse):
 
 class AppOperationResult(ApiResponse):
     """Result of application operations like start/stop."""
+
     def __init__(
         self,
         request_id: str = "",
@@ -150,6 +156,7 @@ class AppOperationResult(ApiResponse):
 
 class WindowListResult(ApiResponse):
     """Result of window listing operations."""
+
     def __init__(
         self,
         request_id: str = "",
@@ -165,6 +172,7 @@ class WindowListResult(ApiResponse):
 
 class WindowInfoResult(ApiResponse):
     """Result of window info operations."""
+
     def __init__(
         self,
         request_id: str = "",

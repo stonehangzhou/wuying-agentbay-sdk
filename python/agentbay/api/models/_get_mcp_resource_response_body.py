@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import annotations
-from darabonba.model import DaraModel 
-from agentbay.api import models as main_models 
+from darabonba.model import DaraModel
+from agentbay.api import models as main_models
 
 
 class GetMcpResourceResponseBody(DaraModel):
@@ -74,6 +74,7 @@ class GetMcpResourceResponseBody(DaraModel):
 
         return self
 
+
 class GetMcpResourceResponseBodyData(DaraModel):
     def __init__(
         self,
@@ -118,6 +119,7 @@ class GetMcpResourceResponseBodyData(DaraModel):
             self.session_id = m.get('SessionId')
 
         return self
+
 
 class GetMcpResourceResponseBodyDataDesktopInfo(DaraModel):
     def __init__(
@@ -185,4 +187,3 @@ class GetMcpResourceResponseBodyDataDesktopInfo(DaraModel):
             self.ticket = m.get('Ticket')
 
         return self
-

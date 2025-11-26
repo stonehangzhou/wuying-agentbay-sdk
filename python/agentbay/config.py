@@ -26,50 +26,50 @@ _BROWSER_FINGERPRINT_PERSIST_PATH = "/tmp/browser_fingerprint"
 def _find_dotenv_file(start_path: Optional[Path] = None) -> Optional[Path]:
     """
     Find .env file by searching upward from start_path.
-    
+
     Search order:
     1. Current working directory
     2. Parent directories (up to root)
     3. Git repository root (if found)
-    
+
     Args:
         start_path: Starting directory for search (defaults to current working directory)
-        
+
     Returns:
         Path to .env file if found, None otherwise
     """
     if start_path is None:
         start_path = Path.cwd()
-    
+
     current_path = Path(start_path).resolve()
-    
+
     # Search upward until we reach root directory
     while current_path != current_path.parent:
         env_file = current_path / ".env"
         if env_file.exists():
             _logger.debug(f"Found .env file at: {env_file}")
             return env_file
-        
+
         # Check if this is a git repository root
         git_dir = current_path / ".git"
         if git_dir.exists():
             _logger.debug(f"Found git repository root at: {current_path}")
-        
+
         current_path = current_path.parent
-    
+
     # Check root directory as well
     root_env = current_path / ".env"
     if root_env.exists():
         _logger.debug(f"Found .env file at root: {root_env}")
         return root_env
-    
+
     return None
 
 
 def _load_dotenv_with_fallback(custom_env_path: Optional[str] = None) -> None:
     """
     Load .env file with improved search strategy.
-    
+
     Args:
         custom_env_path: Custom path to .env file (optional)
     """
@@ -82,7 +82,7 @@ def _load_dotenv_with_fallback(custom_env_path: Optional[str] = None) -> None:
             return
         else:
             _logger.warning(f"Custom .env file not found: {env_path}")
-    
+
     # Find .env file using upward search
     env_file = _find_dotenv_file()
     if env_file:
@@ -107,11 +107,11 @@ The SDK uses the following precedence order for configuration (highest to lowest
 def _load_config(cfg, custom_env_path: Optional[str] = None) -> Dict[str, Any]:
     """
     Load configuration with improved .env file search.
-    
+
     Args:
         cfg: Configuration object (if provided, skips env loading)
         custom_env_path: Custom path to .env file (optional)
-        
+
     Returns:
         Configuration dictionary
     """
@@ -128,7 +128,7 @@ def _load_config(cfg, custom_env_path: Optional[str] = None) -> Dict[str, Any]:
             _load_dotenv_with_fallback(custom_env_path)
         except Exception as e:
             _logger.warning(f"Failed to load .env file: {e}")
-        
+
         # Apply environment variables (highest priority)
         if endpoint := os.getenv("AGENTBAY_ENDPOINT"):
             config["endpoint"] = endpoint
@@ -137,5 +137,5 @@ def _load_config(cfg, custom_env_path: Optional[str] = None) -> Dict[str, Any]:
                 config["timeout_ms"] = int(timeout_ms)
             except ValueError:
                 _logger.warning(f"Invalid AGENTBAY_TIMEOUT_MS value: {timeout_ms}, using default")
-    
+
     return config

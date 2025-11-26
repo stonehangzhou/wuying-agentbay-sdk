@@ -21,8 +21,6 @@ from typing import Dict
 """
 
 
-
-
 class Client(OpenApiClient):
 
     def __init__(
@@ -178,22 +176,23 @@ class Client(OpenApiClient):
         if not DaraCore.is_null(request.id):
             body['Id'] = request.id
         req = open_api_util_models.OpenApiRequest(
-            body = Utils.parse_to_map(body)
+            body=Utils.parse_to_map(body)
         )
         params = open_api_util_models.Params(
-            action = 'ClearContext',
-            version = '2025-05-06',
-            protocol = 'HTTPS',
-            pathname = '/',
-            method = 'POST',
-            auth_type = 'Anonymous',
-            style = 'RPC',
-            req_body_type = 'formData',
-            body_type = 'json'
+            action='ClearContext',
+            version='2025-05-06',
+            protocol='HTTPS',
+            pathname='/',
+            method='POST',
+            auth_type='Anonymous',
+            style='RPC',
+            req_body_type='formData',
+            body_type='json'
         )
         return DaraCore.from_map(
             main_models.ClearContextResponse(),
-            self.do_rpcrequest(params.action, params.version, params.protocol, params.method, params.auth_type, params.body_type, req, runtime)
+            self.do_rpcrequest(params.action, params.version, params.protocol, params.method,
+                               params.auth_type, params.body_type, req, runtime)
         )
 
     async def clear_context_with_options_async(
@@ -208,18 +207,18 @@ class Client(OpenApiClient):
         if not DaraCore.is_null(request.id):
             body['Id'] = request.id
         req = open_api_util_models.OpenApiRequest(
-            body = Utils.parse_to_map(body)
+            body=Utils.parse_to_map(body)
         )
         params = open_api_util_models.Params(
-            action = 'ClearContext',
-            version = '2025-05-06',
-            protocol = 'HTTPS',
-            pathname = '/',
-            method = 'POST',
-            auth_type = 'Anonymous',
-            style = 'RPC',
-            req_body_type = 'formData',
-            body_type = 'json'
+            action='ClearContext',
+            version='2025-05-06',
+            protocol='HTTPS',
+            pathname='/',
+            method='POST',
+            auth_type='Anonymous',
+            style='RPC',
+            req_body_type='formData',
+            body_type='json'
         )
         return DaraCore.from_map(
             main_models.ClearContextResponse(),
@@ -898,18 +897,18 @@ class Client(OpenApiClient):
         if not DaraCore.is_null(request.browser_option):
             body['BrowserOption'] = json.dumps(request.browser_option)
         req = open_api_util_models.OpenApiRequest(
-            body = Utils.parse_to_map(body)
+            body=Utils.parse_to_map(body)
         )
         params = open_api_util_models.Params(
-            action = 'InitBrowser',
-            version = '2025-05-06',
-            protocol = 'HTTPS',
-            pathname = '/',
-            method = 'POST',
-            auth_type = 'Anonymous',
-            style = 'RPC',
-            req_body_type = 'formData',
-            body_type = 'json'
+            action='InitBrowser',
+            version='2025-05-06',
+            protocol='HTTPS',
+            pathname='/',
+            method='POST',
+            auth_type='Anonymous',
+            style='RPC',
+            req_body_type='formData',
+            body_type='json'
         )
         return DaraCore.from_map(
             main_models.InitBrowserResponse(),
@@ -934,15 +933,15 @@ class Client(OpenApiClient):
         body_map = Utils.parse_to_map(body)
         req = open_api_util_models.OpenApiRequest(body=body_map)
         params = open_api_util_models.Params(
-            action = 'InitBrowser',
-            version = '2025-05-06',
-            protocol = 'HTTPS',
-            pathname = '/',
-            method = 'POST',
-            auth_type = 'Anonymous',
-            style = 'RPC',
-            req_body_type = 'formData',
-            body_type = 'json'
+            action='InitBrowser',
+            version='2025-05-06',
+            protocol='HTTPS',
+            pathname='/',
+            method='POST',
+            auth_type='Anonymous',
+            style='RPC',
+            req_body_type='formData',
+            body_type='json'
         )
         return DaraCore.from_map(
             main_models.InitBrowserResponse(),

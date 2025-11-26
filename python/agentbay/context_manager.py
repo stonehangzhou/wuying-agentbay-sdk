@@ -82,6 +82,7 @@ class ContextManager:
         session.delete()
         ```
     """
+
     def __init__(self, session):
         self.session = session
 

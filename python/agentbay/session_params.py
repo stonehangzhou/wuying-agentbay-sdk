@@ -150,7 +150,7 @@ class BrowserContext:
             self.extension_context_id = None
             self.extension_ids = []
             self.extension_context_syncs = None
-        
+
         # Handle browser fingerprint configuration from BrowserFingerprintContext
         if fingerprint_context:
             self.fingerprint_context_id = fingerprint_context.fingerprint_context_id
@@ -194,14 +194,14 @@ class BrowserContext:
         )
 
         return [extension_sync]
-    
+
     def _create_fingerprint_context_sync(self) -> ContextSync:
         """
         Create ContextSync configurations for browser fingerprint.
-        
+
         This method is called only when fingerprint_context is provided and contains
         valid fingerprint configuration (fingerprint_context_id).
-        
+
         Returns:
             ContextSync: Context sync configurations for fingerprint.
                          Returns None if fingerprint configuration is invalid.
@@ -227,7 +227,6 @@ class BrowserContext:
         )
 
         return fingerprint_sync
-
 
     def get_extension_context_syncs(self) -> List[ContextSync]:
         """
@@ -312,7 +311,8 @@ class CreateSessionParams:
         # Add extension context syncs from browser_context if available
         if browser_context and browser_context.extension_context_syncs:
             all_context_syncs.extend(browser_context.extension_context_syncs)
-            _logger.info(f"Added {len(browser_context.extension_context_syncs)} extension context sync(s) from BrowserContext")
+            _logger.info(
+                f"Added {len(browser_context.extension_context_syncs)} extension context sync(s) from BrowserContext")
 
         # Add fingerprint context sync from browser_context if available
         if browser_context and browser_context.fingerprint_context_sync:

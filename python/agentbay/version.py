@@ -64,4 +64,3 @@ __version__ = _get_version()
 # For release builds, the CI/CD will replace __AGENTBAY_IS_RELEASE_BUILD__ with True
 __AGENTBAY_IS_RELEASE_BUILD__ = False
 __is_release__ = _is_release_build()
-

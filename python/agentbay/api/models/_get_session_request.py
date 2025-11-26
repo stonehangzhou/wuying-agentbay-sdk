@@ -38,4 +38,3 @@ class GetSessionRequest(DaraModel):
             self.session_id = m.get('SessionId')
 
         return self
-
