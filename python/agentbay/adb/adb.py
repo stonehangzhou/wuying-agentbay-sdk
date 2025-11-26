@@ -43,9 +43,9 @@ class Adb:
 
         try:
             response = self.session.get_client().call_mcp_tool(request)
-            respoonse_map = response.to_map()
+            response_map = response.to_map()
 
-            body_map = respoonse_map["body"]
+            body_map = response_map["body"]
             data_map = body_map["Data"]
             if data_map.get("isError", False):
                 error_msg = json.dumps(data_map, ensure_ascii=False)

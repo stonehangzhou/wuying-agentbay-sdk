@@ -41,8 +41,8 @@ class FileSystem:
 
         try:
             response = self.session.get_client().call_mcp_tool(request)
-            respoonse_map = response.to_map()
-            body_map = respoonse_map["body"]
+            response_map = response.to_map()
+            body_map = response_map["body"]
             data_map = body_map["Data"]
 
             if data_map.get("isError", False):
